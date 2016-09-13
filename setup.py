@@ -15,7 +15,7 @@ setup(
     long_description=open(join(here, 'README.md')).read(),
     url='https://github.com/LedgerHQ/blue-loader-python',
     packages=find_packages(),
-    install_requires=['hidapi>=0.7.99', 'pycrypto>=2.6.1', 'future', 'ecpy>=0.8.1'],
+    install_requires=['hidapi>=0.7.99', 'future', 'ecpy>=0.8.1'],
     extras_require = {
 	'smartcard': [ 'python-pyscard>=1.6.12-4build1' ]
     },
