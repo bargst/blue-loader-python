@@ -73,7 +73,7 @@ if args.appFlags == None:
 if args.rootPrivateKey == None:
 	privateKey = PrivateKey()
 	publicKey = str(privateKey.pubkey.serialize(compressed=False)).encode('hex')
-	print "Generated random root public key : " + publicKey
+	print("Generated random root public key : " + publicKey)
 	args.rootPrivateKey = privateKey.serialize().encode('ascii')
 
 parser = IntelHexParser(args.fileName)
@@ -98,14 +98,14 @@ if args.apilevel >= 5:
 	path += chr(curveMask)
 	if args.path != None:
 		for item in args.path:
-			if len(item) <> 0:
+			if len(item) != 0:
 				path += parse_bip32_path(item, args.apilevel)	
 else:
 	if args.curve != None:
-		print "Curve not supported using this API level, ignoring"
+		print("Curve not supported using this API level, ignoring")
 	if args.path != None:
 		if len(args.path) > 1:
-			print "Multiple path levels not supported using this API level, ignoring"
+			print("Multiple path levels not supported using this API level, ignoring")
 		else:
 			path = parse_bip32_path(args.path[0], args.apilevel)
 
@@ -134,5 +134,5 @@ if args.signature != None:
 
 loader.createApp(args.appFlags, appLength, args.appName, icon, path)
 hash = loader.load(0x0, 0xE0, parser.getAreas(), args.bootAddr)
-print "Application hash : " + hash
+print("Application hash : " + hash)
 loader.run(parser.getAreas(), args.bootAddr, signature)

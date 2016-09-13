@@ -42,7 +42,7 @@ if args.targetId == None:
 if args.rootPrivateKey == None:
 	privateKey = PrivateKey()
 	publicKey = str(privateKey.pubkey.serialize(compressed=False)).encode('hex')
-	print "Generated random root public key : " + publicKey
+	print("Generated random root public key : " + publicKey)
 	args.rootPrivateKey = privateKey.serialize().encode('ascii')
 
 dongle = getDongle(args.apdu)

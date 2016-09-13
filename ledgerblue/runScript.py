@@ -52,7 +52,7 @@ class SCP:
 		
 	def encryptAES(self, data):
 		paddedData = data + '\x80'
-		while (len(paddedData) % 16) <> 0:
+		while (len(paddedData) % 16) != 0:
 			paddedData += '\x00'
 		cipher = AES.new(self.key, AES.MODE_CBC, self.iv)
 		encryptedData = cipher.encrypt(str(paddedData))
@@ -65,7 +65,7 @@ if args.scp:
 	if args.rootPrivateKey == None:
 		privateKey = PrivateKey()
 		publicKey = str(privateKey.pubkey.serialize(compressed=False)).encode('hex')
-		print "Generated random root public key : " + publicKey
+		print("Generated random root public key : " + publicKey)
 		args.rootPrivateKey = privateKey.serialize().encode('ascii')
 		scp = SCP(dongle, args.targetId, bytearray.fromhex(args.rootPrivateKey))
 

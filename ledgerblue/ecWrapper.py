@@ -62,7 +62,7 @@ class PublicKey(object):
 				out += str(bytearray(self.obj.W.x.to_bytes(32, 'big')))
 				out += str(bytearray(self.obj.W.y.to_bytes(32, 'big')))
 			else:
-				out = "\x03" if ((self.obj.W.y & 1) <> 0) else "\x02"
+				out = "\x03" if ((self.obj.W.y & 1) != 0) else "\x02"
 				out += str(bytearray(self.obj.W.x.to_bytes(32, 'big')))
 			return out
 
@@ -73,7 +73,7 @@ class PublicKey(object):
 			scalar = int.from_bytes(scalar)
 			point = self.obj.W * scalar
 			# libsecp256k1 style secret
-			out = "\x03" if ((point.y & 1) <> 0) else "\x02"
+			out = "\x03" if ((point.y & 1) != 0) else "\x02"
 			out += str(bytearray(point.x.to_bytes(32, 'big')))
 			hash = hashlib.sha256()
 			hash.update(out)

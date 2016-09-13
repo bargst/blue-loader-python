@@ -32,16 +32,12 @@ try:
 except ImportError:
 	SCARD = False
 
-class DongleWait(object):
-	__metaclass__ = ABCMeta
-
+class DongleWait(object, metaclass=ABCMeta):
 	@abstractmethod
 	def waitFirstResponse(self, timeout):
 		pass
 
-class Dongle(object):
-	__metaclass__ = ABCMeta
-
+class Dongle(object, metaclass=ABCMeta):
 	@abstractmethod
 	def exchange(self, apdu, timeout=20):
 		pass
@@ -64,15 +60,15 @@ class HIDDongleHIDAPI(Dongle, DongleWait):
 
 	def exchange(self, apdu, timeout=20):
 		if self.debug:
-			print "=> %s" % hexlify(apdu)
+			print("=> %s" % hexlify(apdu))
 		if self.ledger:
 			apdu = wrapCommandAPDU(0x0101, apdu, 64)		
 		padSize = len(apdu) % 64
 		tmp = apdu
-		if padSize <> 0:
+		if padSize != 0:
 			tmp.extend([0] * (64 - padSize))
 		offset = 0
-		while(offset <> len(tmp)):
+		while(offset != len(tmp)):
 			data = tmp[offset:offset + 64]
 			data = bytearray([0]) + data
 			self.device.write(data)
@@ -114,8 +110,8 @@ class HIDDongleHIDAPI(Dongle, DongleWait):
 		sw = (result[swOffset] << 8) + result[swOffset + 1]
 		response = result[dataStart : dataLength + dataStart]
 		if self.debug:
-			print "<= %s%.2x" % (hexlify(response), sw)
-		if sw <> 0x9000:
+			print("<= %s%.2x" % (hexlify(response), sw))
+		if sw != 0x9000:
 			raise CommException("Invalid status %04x" % sw, sw)
 		return response
 
@@ -148,12 +144,12 @@ class DongleSmartcard(Dongle):
 
 	def exchange(self, apdu, timeout=20):
 		if self.debug:
-			print "=> %s" % hexlify(apdu)
+			print("=> %s" % hexlify(apdu))
 		response, sw1, sw2 = self.device.transmit(toBytes(hexlify(apdu)))
 		sw = (sw1 << 8) | sw2
 		if self.debug:
-			print "<= %s%.2x" % (toHexString(response).replace(" ", ""), sw)
-		if sw <> 0x9000:
+			print("<= %s%.2x" % (toHexString(response).replace(" ", ""), sw))
+		if sw != 0x9000:
 			raise CommException("Invalid status %04x" % sw, sw)
 		return bytearray(response)
 
@@ -183,7 +179,7 @@ def getDongle(debug=False, selectCommand=None):
 			try:
 				connection = reader.createConnection()
 				connection.connect()				
-				if selectCommand <> None:
+				if selectCommand != None:
 					response, sw1, sw2 = connection.transmit(toBytes("00A4040010FF4C4547522E57414C5430312E493031"))																  
 					sw = (sw1 << 8) | sw2
 					if sw == 0x9000:

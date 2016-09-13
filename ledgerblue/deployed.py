@@ -44,7 +44,7 @@ def getDeployedSecretV1(dongle, masterPrivate, targetid):
 	# provide the ephemeral certificate
 	ephemeralPrivate = PrivateKey()
 	ephemeralPublic = bytearray(ephemeralPrivate.pubkey.serialize(compressed=False))
-	print "Using ephemeral key " + str(ephemeralPublic).encode('hex')
+	print("Using ephemeral key " + str(ephemeralPublic).encode('hex'))
 	signature = testMaster.ecdsa_sign(bytes(ephemeralPublic))
 	signature = testMaster.ecdsa_serialize(signature)
 	certificate = bytearray([len(ephemeralPublic)]) + ephemeralPublic + bytearray([len(signature)]) + signature
@@ -63,7 +63,7 @@ def getDeployedSecretV1(dongle, masterPrivate, targetid):
 		if not last_pub_key.ecdsa_verify(bytes(certificatePublic), certificateSignature):
 			if index == 0:
 				# Not an error if loading from user key
-				print "Broken certificate chain - loading from user key"
+				print("Broken certificate chain - loading from user key")
 			else:
 				raise Exception("Broken certificate chain")
 		last_pub_key = PublicKey(bytes(certificatePublic), raw=True)
@@ -94,7 +94,7 @@ def getDeployedSecretV2(dongle, masterPrivate, targetid):
 	#if cardKey <> testMasterPublic:
 	#	raise Exception("Invalid batch public key")
 
-	print "Using test master key " + str(testMasterPublic).encode('hex')
+	print("Using test master key " + str(testMasterPublic).encode('hex'))
 	dataToSign = bytes(bytearray([0x01]) + testMasterPublic)
 	signature = testMaster.ecdsa_sign(bytes(dataToSign))
 	signature = testMaster.ecdsa_serialize(signature)
@@ -105,7 +105,7 @@ def getDeployedSecretV2(dongle, masterPrivate, targetid):
 	# provide the ephemeral certificate
 	ephemeralPrivate = PrivateKey()
 	ephemeralPublic = bytearray(ephemeralPrivate.pubkey.serialize(compressed=False))
-	print "Using ephemeral key " + str(ephemeralPublic).encode('hex')
+	print("Using ephemeral key " + str(ephemeralPublic).encode('hex'))
 	dataToSign = bytes(bytearray([0x11]) + nonce + deviceNonce + ephemeralPublic)
 	signature = testMaster.ecdsa_sign(bytes(dataToSign))
 	signature = testMaster.ecdsa_serialize(signature)
@@ -142,7 +142,7 @@ def getDeployedSecretV2(dongle, masterPrivate, targetid):
 		if not last_pub_key.ecdsa_verify(bytes(certificateSignedData), certificateSignature):
 			if index == 0:
 				# Not an error if loading from user key
-				print "Broken certificate chain - loading from user key"
+				print("Broken certificate chain - loading from user key")
 			else:
 				raise Exception("Broken certificate chain")
 		last_pub_key = PublicKey(bytes(certificatePublicKey), raw=True)

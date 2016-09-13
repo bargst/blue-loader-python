@@ -75,7 +75,7 @@ class HexLoader:
 	def exchange(self, cla, ins, p1, p2, data):
 		apdu = bytearray(chr(cla) + chr(ins) + chr(p1) + chr(p2) + chr(len(data))) + bytearray(data)
 		if self.card == None:
-			print str(apdu).encode('hex')
+			print(str(apdu).encode('hex'))
 		else:
 			self.card.exchange(apdu)
 
@@ -83,7 +83,7 @@ class HexLoader:
 		if not self.secure:
 			return data
 		paddedData = data + '\x80'
-		while (len(paddedData) % 16) <> 0:
+		while (len(paddedData) % 16) != 0:
 			paddedData += '\x00'
 		cipher = AES.new(self.key, AES.MODE_CBC, self.iv)
 		encryptedData = cipher.encrypt(str(paddedData))
@@ -139,7 +139,7 @@ class HexLoader:
 
 	def load(self, erase_u8, max_length_per_apdu, hexAreas, bootaddr):
 		initialAddress = 0
-		if (len(hexAreas) <> 0) and self.relative:
+		if (len(hexAreas) != 0) and self.relative:
 			initialAddress = hexAreas[0].getStart()
 		sha256 = hashlib.new('sha256')
 		for area in hexAreas:
@@ -169,7 +169,7 @@ class HexLoader:
 
 	def run(self, hexAreas, bootaddr, signature=None):
 		initialAddress = 0
-		if (len(hexAreas) <> 0) and self.relative:
+		if (len(hexAreas) != 0) and self.relative:
 			initialAddress = hexAreas[0].getStart()		
 		self.boot(bootaddr - initialAddress, signature)
 		

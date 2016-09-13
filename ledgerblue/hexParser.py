@@ -43,7 +43,7 @@ class IntelHexParser:
 			data = data.rstrip('\r\n')
 			if len(data) == 0:
 				continue
-			if data[0] <> ':':
+			if data[0] != ':':
 				raise Exception("Invalid data at line " + str(lineNumber))
 			data = bytearray(data[1:].decode('hex'))		
 			count = data[0]
@@ -55,7 +55,7 @@ class IntelHexParser:
 				if startFirst == None:
 					startFirst = address
 					current = startFirst
-				if address <> current:
+				if address != current:
 					self.areas.append(IntelHexArea((startZone << 16) + startFirst, zoneData))
 					zoneData = ""
 					startFirst = address
@@ -63,7 +63,7 @@ class IntelHexParser:
 				zoneData += data[4:4 + count]
 				current += count
 			if recordType == 0x01:
-				if len(zoneData) <> 0:
+				if len(zoneData) != 0:
 					self.areas.append(IntelHexArea((startZone << 16) + startFirst, zoneData))
 					zoneData = ""
 					startZone = None
@@ -74,7 +74,7 @@ class IntelHexParser:
 			if recordType == 0x03:
 					raise Exception("Unsupported record 03")
 			if recordType == 0x04:
-					if len(zoneData) <> 0:
+					if len(zoneData) != 0:
 						self.areas.append(IntelHexArea((startZone << 16) + startFirst, zoneData))
 						zoneData = ""
 						startZone = None
